@@ -1,15 +1,6 @@
 {
   "version": 2,
-  "functions": {
-    "debest-contact-backend/index.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "rewrites": [
-    {
-      "source": "/api/contact",
-      "destination": "/debest-contact-backend/index.js"
-    },
     {
       "source": "/(.*)",
       "destination": "/index.html"

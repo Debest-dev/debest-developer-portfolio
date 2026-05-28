@@ -7,7 +7,7 @@ import { GlassCard } from '../components/ui/GlassCard';
 import { Button } from '../components/ui/Button';
 
 // ── Change this to your deployed backend URL when you go live ──────────────
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api/contact';
+const API_URL = import.meta.env.VITE_API_URL || '/api/contact';
 
 const quickConnections = [
   {
