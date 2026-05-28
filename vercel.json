@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/contact",
-      "destination": "/debest-contact-backend/server.js"
+      "destination": "/debest-contact-backend/index.js"
     },
     {
       "source": "/(.*)",
