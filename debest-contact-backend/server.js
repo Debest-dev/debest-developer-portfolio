@@ -133,8 +133,10 @@ app.get("/api/messages", async (req, res) => {
 // Health check
 app.get("/api/health", (_, res) => res.json({ status: "OK" }));
 
-// Start server
-app.listen(PORT, async () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  await initDB();
+/// Keep your listen function exactly like this
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });
+
+// Move this line down here, completely outside the curly braces!
+module.exports = app;

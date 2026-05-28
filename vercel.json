@@ -1,5 +1,10 @@
 {
+  "version": 2,
   "rewrites": [
+    {
+      "source": "/api/contact",
+      "destination": "/debest-contact-backend/server.js"
+    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
