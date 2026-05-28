@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=syne@300,400,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    background-color: #FAFAFA;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: #FAFAFA;
+    color: #0A0A0A;
+    letter-spacing: -0.01em;
+    font-weight: 300; /* Prioritize light font-weights */
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Syne', sans-serif;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
+    font-weight: 400; /* Headings prioritize normal weight rather than bold */
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+  }
+
+  .glass-dark {
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .gradient-text {
+    background: linear-gradient(135deg, #4F46E5, #0EA5E9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-bg {
+    background: linear-gradient(135deg, #4F46E5, #0EA5E9);
+  }
+
+  .card-shadow {
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  }
+}
+
+/* Custom animations */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes pulse-orb {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+    filter: blur(40px) brightness(1);
+  }
+  50% {
+    transform: scale(1.1) translate(10px, -10px);
+    filter: blur(60px) brightness(1.2);
+  }
+}
+
+.animate-pulse-orb {
+  animation: pulse-orb 8s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  from { transform: translate(-50%, -50%) scale(0.95); opacity: 0.5; }
+  to   { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+}
+
+@keyframes counterSpin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to   { transform: translate(-50%, -50%) rotate(-360deg); }
+}
+
+@keyframes colorShift {
+  0%   { filter: hue-rotate(0deg) blur(32px); }
+  50%  { filter: hue-rotate(45deg) blur(28px); }
+  100% { filter: hue-rotate(0deg) blur(32px); }
+}
+
+/* ── Spline background + watermark fix ── */
+/* Forces the Spline canvas to be transparent */
+spline-viewer,
+spline-viewer canvas,
+canvas {
+  background: transparent !important;
+}
+
+/* Hides the "Built with Spline" watermark badge */
+#logo {
+  display: none !important;
+}
