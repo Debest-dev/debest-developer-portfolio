@@ -117,7 +117,7 @@ export const Links = () => {
           {/* Avatar + Name */}
           <motion.div variants={itemVariants} className="flex flex-col items-center gap-3 mb-4">
             {/* Photo */}
-            <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-lg">
+            <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-white shadow-lg">
 
               <img
                 src="/images/profile_picture.png"
