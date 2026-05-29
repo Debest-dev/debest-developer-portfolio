@@ -1,7 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-
-// ── MongoDB Message Schema ──────────────────────────────────────────────────
 const messageSchema = new mongoose.Schema({
   fullName:    { type: String, required: true, trim: true },
   email:       { type: String, required: true, trim: true, lowercase: true },
@@ -14,7 +12,6 @@ const messageSchema = new mongoose.Schema({
 
 const Message = mongoose.models.Message || mongoose.model("Message", messageSchema);
 
-// ── DB Connection (cached for serverless) ──────────────────────────────────
 let isConnected = false;
 async function connectDB() {
   if (isConnected) return;
@@ -22,25 +19,13 @@ async function connectDB() {
   isConnected = true;
 }
 
-// ── CORS helper ─────────────────────────────────────────────────────────────
-function setCors(res) {
+export default async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-}
 
-// ── Vercel Serverless Handler ────────────────────────────────────────────────
-module.exports = async function handler(req, res) {
-  setCors(res);
-
-  // Handle CORS preflight
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ success: false, error: "Method not allowed." });
-  }
+  if (req.method === "OPTIONS") return res.status(200).end();
+  if (req.method !== "POST") return res.status(405).json({ success: false, error: "Method not allowed." });
 
   const { fullName, email, projectType, budgetRange, message } = req.body;
 
@@ -60,4 +45,4 @@ module.exports = async function handler(req, res) {
     console.error("DB error:", err.message);
     return res.status(500).json({ success: false, error: "Server error. Please try again later." });
   }
-};
+}
