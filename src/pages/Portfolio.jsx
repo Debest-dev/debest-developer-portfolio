@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowUpRight, ExternalLink } from 'lucide-react';
+import { ArrowUpRight, ExternalLink, Layers } from 'lucide-react';
 import { projects } from '../data/projects';
 
 const buildFilters = (projects) => {
@@ -76,7 +76,6 @@ const FeaturedHero = ({ project }) => (
           <h1 className="font-display font-light text-text leading-[0.9] mb-8" style={{ fontSize: 'clamp(4rem, 10vw, 8rem)', letterSpacing: '-0.05em' }}>
             My<br />Work
           </h1>
-          
           <div className="border-t border-black/8 pt-8">
             <p className="text-[10px] uppercase tracking-widest text-text/35 font-light mb-3">Featured Project</p>
             <h2 className="font-display font-normal text-2xl tracking-tight text-text mb-4">{project.title}</h2>
@@ -146,7 +145,7 @@ export const Portfolio = () => {
 
           {filteredProjects.length === 0 && (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-24">
-              <span className="text-4xl font-display font-light text-text/10 block mb-4">✦</span>
+              <Layers size={32} className="text-text/20 mx-auto mb-4" />
               <p className="text-sm text-text/40 font-light">No projects in this category yet.</p>
             </motion.div>
           )}

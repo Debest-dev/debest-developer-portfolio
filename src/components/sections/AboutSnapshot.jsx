@@ -24,7 +24,7 @@ const StickyStatCard = ({ stat, index, total }) => {
           borderRadius: '1rem',
           background: `rgba(255,255,255,${1 - index * 0.05})`,
         }}>
-          <GlassCard className="flex items-center justify-between border border-black/5 min-h-[90px]" hoverEffect={false}>
+          <GlassCard className="flex items-center border border-black/5 min-h-[90px]" hoverEffect={false}>
             <div className="flex flex-col">
               <span className={`${stat.small ? 'text-xl' : 'text-2xl'} font-display font-light text-brand-500 tracking-tight`}>
                 {stat.value}
@@ -33,7 +33,6 @@ const StickyStatCard = ({ stat, index, total }) => {
                 {stat.label}
               </span>
             </div>
-            <span className="text-brand-500/20 text-xl font-display select-none">✦</span>
           </GlassCard>
         </div>
       </motion.div>
@@ -55,7 +54,7 @@ export const AboutSnapshot = () => {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:items-center">
 
-          {/* Left: Stats (no heading here) */}
+          {/* Left: Stats */}
           <div className="lg:col-span-5">
             {/* Mobile sticky stack */}
             <div className="lg:hidden flex flex-col pb-8">
@@ -75,7 +74,7 @@ export const AboutSnapshot = () => {
                   className="h-full"
                 >
                   <GlassCard
-                    className="flex items-center justify-between border border-black/5 bg-white/40 min-h-[90px] h-full"
+                    className="flex items-center border border-black/5 bg-white/40 min-h-[90px] h-full"
                     hoverEffect={true}
                   >
                     <div className="flex flex-col">
@@ -86,21 +85,19 @@ export const AboutSnapshot = () => {
                         {stat.label}
                       </span>
                     </div>
-                    <span className="text-brand-500/20 text-xl font-display select-none">✦</span>
                   </GlassCard>
                 </motion.div>
               ))}
             </div>
           </div>
 
-          {/* Right: "Who I Am" → "Full-Stack Developer" → bio */}
+          {/* Right: Bio */}
           <motion.div
             variants={itemVariants}
             initial="hidden"
             animate={inView ? "visible" : "hidden"}
             className="lg:col-span-7 flex flex-col items-start gap-4 lg:pl-6"
           >
-            {/* Stacked headings */}
             <div className="flex flex-col gap-1 mb-0 mt-6 lg:mt-0">
               <span className="text-[10px] uppercase tracking-widest text-brand-500 font-light">About Me</span>
               <h3 className="text-xl md:text-2xl font-normal tracking-tight text-text">
