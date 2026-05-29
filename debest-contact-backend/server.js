@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { Pool } = require("pg");
+const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 const rateLimit = require("express-rate-limit");
 
@@ -20,38 +20,25 @@ const limiter = rateLimit({
 });
 app.use("/api/contact", limiter);
 
-// ── Database (Forced Local/Non-SSL Configuration) ───────────────────────────
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'debestdev',
-  password: 'password123', // Matches your .env settings
-  port: 5432,
-  ssl: false // Completely disables local SSL enforcement
+// ── MongoDB Schema & Model Setup ─────────────────────────────────────────────
+const messageSchema = new mongoose.Schema({
+  fullName:    { type: String, required: true, trim: true },
+  email:       { type: String, required: true, trim: true, lowercase: true },
+  projectType: { type: String, default: null },
+  budgetRange: { type: String, default: null },
+  message:     { type: String, required: true, trim: true },
+  createdAt:   { type: Date, default: Date.now },
+  isRead:      { type: Boolean, default: false },
 });
 
-// Create messages table if it doesn't exist
-async function initDB() {
-  try {
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS messages (
-        id          SERIAL PRIMARY KEY,
-        full_name   VARCHAR(100) NOT NULL,
-        email       VARCHAR(150) NOT NULL,
-        project_type VARCHAR(100),
-        budget_range VARCHAR(100),
-        message     TEXT NOT NULL,
-        created_at  TIMESTAMP DEFAULT NOW(),
-        is_read     BOOLEAN DEFAULT FALSE
-      )
-    `);
-    console.log("✅ Database ready and table verified");
-  } catch (err) {
-    console.error("❌ Database initialization failed:", err.message);
-  }
-}
+const Message = mongoose.models.Message || mongoose.model("Message", messageSchema);
 
-// ── Email Transporter ────────────────────────────────────────────────────────
+// Connect to MongoDB Atlas
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log("MongoDB Atlas Connected Successfully..."))
+  .catch((err) => console.error("MongoDB Connection Error:", err.message));
+
+// ── Email Setup ──────────────────────────────────────────────────────────────
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -60,83 +47,82 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Email Notification function
 async function sendNotificationEmail({ fullName, email, projectType, budgetRange, message }) {
   const mailOptions = {
-    from: process.env.EMAIL_USER,
+    from: `"Portfolio Website" <${process.env.EMAIL_USER}>`,
     to: process.env.NOTIFY_EMAIL,
-    subject: `💼 New Portfolio Message from ${fullName}`,
+    subject: `New Contact Form Message from ${fullName}`,
     text: `
-You have received a new contact form submission.
-
-👤 Full Name: ${fullName}
-📧 Email: ${email}
-📁 Project Type: ${projectType || "Not specified"}
-💰 Budget Range: ${budgetRange || "Not specified"}
-
-📝 Message:
-${message}
+      You received a new message from your website contact form:
+      
+      Name: ${fullName}
+      Email: ${email}
+      Project Type: ${projectType || "Not Specified"}
+      Budget Range: ${budgetRange || "Not Specified"}
+      
+      Message:
+      ${message}
     `,
   };
 
-  return transporter.sendMail(mailOptions);
+  // Sends the email and waits for the delivery receipt from Google
+  const info = await transporter.sendMail(mailOptions);
+  console.log("👉 Nodemailer Status: Email left server successfully! Message ID:", info.messageId);
 }
 
-// ── Routes ──────────────────────────────────────────────────────────────────
+// ── API Routes ───────────────────────────────────────────────────────────────
 
-// POST /api/contact — Submit contact form
+// POST /api/contact — Handle Form Submission
 app.post("/api/contact", async (req, res) => {
-  const { fullName, email, projectType, budgetRange, message } = req.body;
-
-  if (!fullName || !email || !message) {
-    return res.status(400).json({ success: false, error: "Missing required fields." });
-  }
-
-  if (message.length > 2000) {
-    return res.status(400).json({ success: false, error: "Message too long (max 2000 characters)." });
-  }
-
   try {
-    // Save to database
-    await pool.query(
-      `INSERT INTO messages (full_name, email, project_type, budget_range, message)
-       VALUES ($1, $2, $3, $4, $5)`,
-      [fullName.trim(), email.trim().toLowerCase(), projectType || null, budgetRange || null, message.trim()]
-    );
+    const { fullName, email, projectType, budgetRange, message } = req.body;
 
-    // Send email notification (non-blocking)
-    sendNotificationEmail({ fullName, email, projectType, budgetRange, message }).catch((err) =>
-      console.error("Email notification failed:", err.message)
-    );
+    if (!fullName || !email || !message) {
+      return res.status(400).json({ success: false, error: "Missing required fields." });
+    }
+
+    // Save directly to MongoDB Atlas
+    const newMessage = await Message.create({
+      fullName: fullName.trim(),
+      email: email.trim().toLowerCase(),
+      projectType: projectType || null,
+      budgetRange: budgetRange || null,
+      message: message.trim()
+    });
+
+    console.log("✅ MongoDB Status: Saved document successfully:", newMessage._id);
+
+    // Send email notification (tracked logs via catch block)
+    sendNotificationEmail({ fullName, email, projectType, budgetRange, message })
+      .catch((err) => {
+        console.error("❌ Nodemailer Error: Email delivery failed!");
+        console.error("Reason:", err.message);
+      });
 
     return res.json({ success: true, message: "Message received! I'll get back to you soon." });
   } catch (err) {
-    console.error("DB error:", err.message);
+    console.error("Server error:", err.message);
     return res.status(500).json({ success: false, error: "Server error. Please try again later." });
   }
 });
 
-// GET /api/messages — view all messages
+// GET /api/messages — View all saved messages securely
 app.get("/api/messages", async (req, res) => {
   const secret = req.headers["x-admin-secret"];
   if (secret !== process.env.ADMIN_SECRET) {
     return res.status(401).json({ error: "Unauthorized" });
   }
   try {
-    const { rows } = await pool.query("SELECT * FROM messages ORDER BY created_at DESC");
-    res.json(rows);
+    const messages = await Message.find().sort({ createdAt: -1 });
+    res.json(messages);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
 // Health check
-app.get("/api/health", (_, res) => res.json({ status: "OK" }));
+app.get("/api/health", (_, res) => res.json({ status: "OK", database: "MongoDB Atlas" }));
 
-/// Keep your listen function exactly like this
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Backend server running on port ${PORT}`);
 });
-
-// Move this line down here, completely outside the curly braces!
-module.exports = app;
