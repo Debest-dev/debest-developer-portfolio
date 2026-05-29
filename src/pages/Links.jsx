@@ -118,18 +118,18 @@ export const Links = () => {
           <motion.div variants={itemVariants} className="flex flex-col items-center gap-3 mb-4">
             {/* Photo */}
             <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-white shadow-lg">
-                
+
               <img
-                src="/images/hero_image.png"
-                alt="Blessed Anthony"
-                className="w-full h-full object-cover object-top"
+                src="/images/profile_picture.png"
+                alt="Dbest.dev"
+                className="w-full h-full object-cover object-center"
               />
             </div>
 
             {/* Name & title */}
             <div className="text-center">
               <h1 className="text-lg font-normal tracking-tight text-text">
-                Blessed Anthony
+                Debest.dev
               </h1>
               <p className="text-[11px] uppercase tracking-widest text-text/40 font-light mt-0.5">
                 Full-Stack Developer
