@@ -112,14 +112,6 @@ export const AboutSnapshot = () => {
               I'm Blessed Anthony, a full-stack developer focused on building modern web applications that are fast, scalable, and user-friendly. I work with startups, founders, and product teams to turn ideas into reliable digital products across both Web2 and Web3.
             </p>
 
-            <p className="text-sm md:text-base text-text/65 font-light leading-relaxed">
-              My work spans frontend development with React and Next.js, backend systems with Node.js and Python, and blockchain solutions including smart contracts and dApp interfaces. I enjoy building products that not only look good, but perform well and solve real problems.
-            </p>
-
-            <p className="text-sm md:text-base text-text/65 font-light leading-relaxed">
-              I've worked with startups across fintech, e-commerce, healthcare, and blockchain, collaborating with both local and international teams. I take projects from idea to deployment, handling architecture decisions, UI implementation, API design, and everything in between.
-            </p>
-
             <a
               href="/about"
               className="mt-2 inline-flex items-center gap-1 text-xs uppercase tracking-widest font-normal text-brand-500 hover:text-brand-600 transition-colors"

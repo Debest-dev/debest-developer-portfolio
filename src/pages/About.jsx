@@ -61,10 +61,6 @@ export const About = () => {
               I believe the best products are built on a foundation of clean code, honest communication, and a genuine understanding of the business problem being solved. I don't just write code — I think deeply about what's being built and how it creates value.
             </p>
 
-            <p className="text-sm md:text-base text-text/65 font-light leading-relaxed">
-              I value clean code, clear communication, and delivering work that lasts.
-            </p>
-
             <a
               href="/Blessed-Anthony-CV.pdf"
               download

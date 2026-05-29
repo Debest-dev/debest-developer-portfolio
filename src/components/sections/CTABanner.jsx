@@ -24,7 +24,7 @@ export const CTABanner = () => {
           </h2>
 
           <p className="text-sm md:text-base text-white/80 font-light max-w-md mb-8 leading-relaxed relative z-10">
-            Have an exciting project you need help with? Send me an email or contact me via instant message!
+            I'm currently available for freelance and contract work — remote, worldwide.
           </p>
 
           <motion.div whileHover={{ scale: 1.03 }} transition={{ duration: 0.2 }} className="relative z-10">

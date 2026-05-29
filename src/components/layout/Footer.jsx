@@ -27,7 +27,7 @@ export const Footer = () => {
             </span>
           </Link>
           <p className="text-xs text-white/35 font-light leading-relaxed max-w-xs">
-            A premium full-stack developer portfolio focused on building fast, scalable, and highly aesthetic web apps for Web2 & Web3 startups.
+            Full-stack developer building fast, scalable web apps for Web2 & Web3 startups. Available worldwide for remote projects.
           </p>
         </div>
 
