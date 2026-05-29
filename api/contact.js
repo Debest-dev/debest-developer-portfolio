@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const nodemailer = require("nodemailer"); // 👈 Added nodemailer
 
 const messageSchema = new mongoose.Schema({
   fullName:    { type: String, required: true, trim: true },
@@ -38,8 +39,42 @@ module.exports = async function handler(req, res) {
   }
 
   try {
+    // 1. Save to Database
     await connectDB();
     await Message.create({ fullName, email, projectType, budgetRange, message });
+
+    // 2. Send Email Notification 👈 Added email logic
+    try {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: process.env.NOTIFY_EMAIL || process.env.EMAIL_USER,
+        subject: `New Portfolio Message from ${fullName}`,
+        html: `
+          <h3>New Contact Form Submission</h3>
+          <p><strong>Name:</strong> ${fullName}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Project Type:</strong> ${projectType || "N/A"}</p>
+          <p><strong>Budget Range:</strong> ${budgetRange || "N/A"}</p>
+          <p><strong>Message:</strong></p>
+          <p>${message}</p>
+        `,
+      };
+
+      await transporter.sendMail(mailOptions);
+      console.log("Notification email sent successfully!");
+    } catch (emailErr) {
+      // If the email fails, we log it but don't crash the database success response
+      console.error("Nodemailer error:", emailErr.message);
+    }
+
     return res.status(200).json({ success: true, message: "Message received! I'll get back to you soon." });
   } catch (err) {
     console.error("DB error:", err.message);
