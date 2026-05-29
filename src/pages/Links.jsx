@@ -120,7 +120,7 @@ export const Links = () => {
             <div className="w-28 h-28 rounded-full overflow-hidden border-2 border-white shadow-lg">
 
               <img
-                src="/images/profile_picture.png"
+                src="/images/profile_picture.webp"
                 alt="Dbest.dev"
                 className="w-full h-full object-cover object-center"
               />
