@@ -12,8 +12,6 @@ import { About } from './pages/About';
 import { Portfolio } from './pages/Portfolio';
 import { ProjectDetail } from './pages/ProjectDetail';
 import { Services } from './pages/Services';
-import { Blog } from './pages/Blog';
-import { BlogPost } from './pages/BlogPost';
 import { Contact } from './pages/Contact';
 
 // Animated Route Wrapper
@@ -38,79 +36,13 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route
-          path="/"
-          element={
-            <PageWrapper>
-              <Home />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/about"
-          element={
-            <PageWrapper>
-              <About />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/portfolio"
-          element={
-            <PageWrapper>
-              <Portfolio />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/portfolio/:slug"
-          element={
-            <PageWrapper>
-              <ProjectDetail />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/services"
-          element={
-            <PageWrapper>
-              <Services />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/blog"
-          element={
-            <PageWrapper>
-              <Blog />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/blog/:slug"
-          element={
-            <PageWrapper>
-              <BlogPost />
-            </PageWrapper>
-          }
-        />
-        <Route
-          path="/contact"
-          element={
-            <PageWrapper>
-              <Contact />
-            </PageWrapper>
-          }
-        />
-        {/* Fallback route */}
-        <Route
-          path="*"
-          element={
-            <PageWrapper>
-              <Home />
-            </PageWrapper>
-          }
-        />
+        <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
+        <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
+        <Route path="/portfolio" element={<PageWrapper><Portfolio /></PageWrapper>} />
+        <Route path="/portfolio/:slug" element={<PageWrapper><ProjectDetail /></PageWrapper>} />
+        <Route path="/services" element={<PageWrapper><Services /></PageWrapper>} />
+        <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+        <Route path="*" element={<PageWrapper><Home /></PageWrapper>} />
       </Routes>
     </AnimatePresence>
   );
@@ -120,15 +52,10 @@ function App() {
   return (
     <Router>
       <div className="flex flex-col min-h-screen bg-[#FAFAFA] text-text">
-        {/* Sticky navbar */}
         <Navbar />
-
-        {/* Main Content Area */}
         <main className="flex-grow flex flex-col">
           <AnimatedRoutes />
         </main>
-
-        {/* Footer */}
         <Footer />
       </div>
     </Router>
