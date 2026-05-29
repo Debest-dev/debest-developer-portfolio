@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const cors = require("cors");
+
 
 // ── MongoDB Message Schema ──────────────────────────────────────────────────
 const messageSchema = new mongoose.Schema({
