@@ -15,7 +15,7 @@ export const Footer = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <footer className="w-full bg-[#0F0F1A] pt-16 pb-8 px-6 relative">
+    <footer className="w-full bg-[#0F0F1A] pt-24 pb-8 px-6 relative mt-16">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
 
         {/* Monogram Col */}
