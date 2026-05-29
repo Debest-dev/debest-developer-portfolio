@@ -76,9 +76,7 @@ const FeaturedHero = ({ project }) => (
           <h1 className="font-display font-light text-text leading-[0.9] mb-8" style={{ fontSize: 'clamp(4rem, 10vw, 8rem)', letterSpacing: '-0.05em' }}>
             My<br />Work
           </h1>
-          <p className="text-sm font-light text-text/55 leading-relaxed max-w-sm mb-10 font-mono">
-            Full-stack web applications and AI-powered tools built for real problems — from legal tech to fintech and beyond.
-          </p>
+          
           <div className="border-t border-black/8 pt-8">
             <p className="text-[10px] uppercase tracking-widest text-text/35 font-light mb-3">Featured Project</p>
             <h2 className="font-display font-normal text-2xl tracking-tight text-text mb-4">{project.title}</h2>
