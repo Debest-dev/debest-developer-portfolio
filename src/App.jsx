@@ -13,6 +13,7 @@ import { Portfolio } from './pages/Portfolio';
 import { ProjectDetail } from './pages/ProjectDetail';
 import { Services } from './pages/Services';
 import { Contact } from './pages/Contact';
+import { Links } from './pages/Links';
 
 // Animated Route Wrapper
 const PageWrapper = ({ children }) => {
@@ -32,6 +33,7 @@ const PageWrapper = ({ children }) => {
 // Animated Routes Switcher
 const AnimatedRoutes = () => {
   const location = useLocation();
+  const isLinksPage = location.pathname === '/links';
 
   return (
     <AnimatePresence mode="wait">
@@ -42,6 +44,7 @@ const AnimatedRoutes = () => {
         <Route path="/portfolio/:slug" element={<PageWrapper><ProjectDetail /></PageWrapper>} />
         <Route path="/services" element={<PageWrapper><Services /></PageWrapper>} />
         <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
+        <Route path="/links" element={<Links />} />
         <Route path="*" element={<PageWrapper><Home /></PageWrapper>} />
       </Routes>
     </AnimatePresence>
@@ -51,14 +54,24 @@ const AnimatedRoutes = () => {
 function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen bg-[#FAFAFA] text-text">
-        <Navbar />
-        <main className="flex-grow flex flex-col">
-          <AnimatedRoutes />
-        </main>
-        <Footer />
-      </div>
+      <AppShell />
     </Router>
+  );
+}
+
+// Separate shell so we can read location
+function AppShell() {
+  const location = useLocation();
+  const isLinksPage = location.pathname === '/links';
+
+  return (
+    <div className="flex flex-col min-h-screen bg-[#FAFAFA] text-text">
+      {!isLinksPage && <Navbar />}
+      <main className="flex-grow flex flex-col">
+        <AnimatedRoutes />
+      </main>
+      {!isLinksPage && <Footer />}
+    </div>
   );
 }
 
