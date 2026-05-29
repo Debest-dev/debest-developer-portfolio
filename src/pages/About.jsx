@@ -63,7 +63,7 @@ export const About = () => {
 
             <a
               href="/Blessed-Anthony-CV.pdf"
-              download
+              download="Blessed-Anthony-CV.pdf"
               className="mt-3 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brand-500 text-white text-xs uppercase tracking-widest font-normal hover:bg-brand-600 transition-colors shadow-sm"
             >
               Download CV <span className="text-base leading-none">↓</span>
