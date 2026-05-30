@@ -71,7 +71,7 @@ export const MobileMenu = ({ isOpen, onClose, links, activeLink }) => {
               })}
 
               <motion.div variants={linkVariants} className="pt-6">
-                <Button href="/Blessed_Anthony_CV.pdf" target="_blank" rel="noopener noreferrer" onClick={onClose} variant="outline" className="w-full">
+                <Button href="/Blessed-Anthony-CV.pdf" target="_blank" rel="noopener noreferrer" onClick={onClose} variant="outline" className="w-full">
                   Download CV
                 </Button>
               </motion.div>
