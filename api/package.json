@@ -1,1 +1,7 @@
-{"type":"commonjs"}
+{
+  "type": "commonjs",
+  "dependencies": {
+    "nodemailer": "^6.9.13",
+    "mongoose": "^9.6.3"
+  }
+}
