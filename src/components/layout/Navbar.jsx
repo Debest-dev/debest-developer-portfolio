@@ -63,7 +63,7 @@ export const Navbar = () => {
 
           {/* Download CV — outline so it doesn't compete with hero CTA */}
           <div className="hidden md:block">
-            <Button href="/Blessed_Anthony_CV.pdf" variant="outline" className="py-2.5 px-5 text-xs font-normal" target="_blank" rel="noopener noreferrer">
+            <Button href="/Blessed-Anthony-CV.pdf" variant="outline" className="py-2.5 px-5 text-xs font-normal" target="_blank" rel="noopener noreferrer">
               Download CV
             </Button>
           </div>
