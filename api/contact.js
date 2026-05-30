@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const nodemailer = require("nodemailer");
 
 const messageSchema = new mongoose.Schema({
   fullName:    { type: String, required: true, trim: true },
@@ -18,6 +19,14 @@ async function connectDB() {
   await mongoose.connect(process.env.MONGODB_URI);
   isConnected = true;
 }
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -40,6 +49,20 @@ module.exports = async function handler(req, res) {
   try {
     await connectDB();
     await Message.create({ fullName, email, projectType, budgetRange, message });
+
+    // Send email notification
+    try {
+      await transporter.sendMail({
+        from: `"Portfolio Website" <${process.env.EMAIL_USER}>`,
+        to: process.env.NOTIFY_EMAIL,
+        subject: `New Portfolio Message from ${fullName}`,
+        text: `You have received a new contact form submission.\n\nFull Name: ${fullName}\nEmail: ${email}\nProject Type: ${projectType || "Not Specified"}\nBudget Range: ${budgetRange || "Not Specified"}\n\nMessage:\n${message}`,
+      });
+      console.log("Email sent successfully");
+    } catch (emailErr) {
+      console.error("Email error:", emailErr.message);
+    }
+
     return res.status(200).json({ success: true, message: "Message received! I'll get back to you soon." });
   } catch (err) {
     console.error("DB error:", err.message);
